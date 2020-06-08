@@ -189,22 +189,20 @@ class testPL:
 
         # physicalEdges = np.linspace(0, 100, 1000)  # square pc^2
         # physicalCenter = self.getEdgeCenter(physicalEdges)
-        length = 1500 * np.deg2rad(0.5 / 60)
+        length = 1500 * np.deg2rad(0.5/60)
         compoleteAreaPhysical = length ** 2 * 4  # 4 pixels
 
         for eachTB in TBList:
             # realArea = doDBSCAN.getRealArea(eachTB)
             print "Total number of clouds, ", len(eachTB)
-            phyiscalArea, physicalAreaError = self.getPhyscialAreaAndError(eachTB)
+            phyiscalArea, physicalAreaError = self.getPhyscialAreaAndError( eachTB )
 
             # binN, binEdges = np.histogram(realArea, bins=physicalEdges)
 
             # calculate alpha
 
             # meanA, stdA = doDBSCAN.getAlphaWithMCMC(realArea, minArea=compoleteAreaPhysical, maxArea=None, physicalArea=True)
-            meanA, stdA = doPowerLaw.getAlphaWithMCMCWithErrorMultiChains(phyiscalArea, physicalAreaError,
-                                                                          minArea=compoleteAreaPhysical,
-                                                                          maxArea=np.max(phyiscalArea))
+            meanA, stdA = doPowerLaw.getAlphaWithMCMCWithErrorMultiChains(phyiscalArea, physicalAreaError,    minArea=compoleteAreaPhysical,  maxArea=np.max(phyiscalArea))
 
             alphaList.append(meanA)
 
@@ -261,7 +259,7 @@ class testPL:
             #######
             alphaArea, alphaAreaError = self.getPhysicalAlphaList(tbList)
 
-            print "PhysicalAreaMinPts{}Con{}".format( minPts, conType)
+            print "PhysicalAreaMinPts{}Con{}".format( eachminPts, conType)
             print alphaArea,alphaAreaError
 
             saveTagAlpha=self.saveAlphaPath+"PhysicalAreaMinPts{}Con{}".format( eachminPts, conType)
@@ -269,6 +267,36 @@ class testPL:
 
             np.save(saveTagAlpha, alphaArea  )
             np.save(saveTagAlphaError, alphaAreaError  )
+
+
+    def calMassAlpha(self,conType=1):
+        """
+
+        :return:
+        """
+
+        for eachminPts in self.conTypeG2650[conType]:
+
+            tbList = self.getTBByCutOffList(self.cutoffList,eachminPts,conType)
+
+
+            #######
+            alphaMass , alphaMassError = self.getPhysicalAlphaList(tbList)
+
+            print "massAlphaMinPts{}Con{}".format( minPts, conType)
+            print alphaArea,alphaAreaError
+
+            saveTagAlpha = self.saveAlphaPath+"massAlphaMinPts{}Con{}".format( eachminPts, conType)
+            saveTagAlphaError = self.saveAlphaPath+"massAlphaMinPts{}Con{}".format( eachminPts, conType)
+
+            np.save(saveTagAlpha, alphaMass  )
+            np.save(saveTagAlphaError, alphaMassError  )
+
+
+
+
+
+
 
     def ZZZ(self):
         pass
