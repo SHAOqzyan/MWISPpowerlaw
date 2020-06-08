@@ -414,8 +414,8 @@ if 1:
 
     doPL=testPL()
     doPL.calMassAlpha( conType=1 )
-    #doPL.calMassAlpha( conType=2 )
-    #doPL.calMassAlpha( conType=3 )
+    doPL.calMassAlpha( conType=2 )
+    doPL.calMassAlpha( conType=3 )
 
 
 
