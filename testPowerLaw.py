@@ -261,6 +261,9 @@ class testPL:
             #######
             alphaArea, alphaAreaError = self.getPhysicalAlphaList(tbList)
 
+            print "PhysicalAreaMinPts{}Con{}".format( minPts, conType)
+            print alphaArea,alphaAreaError
+
             saveTagAlpha=self.saveAlphaPath+"PhysicalAreaMinPts{}Con{}".format( minPts, conType)
             saveTagAlphaError=self.saveAlphaPath+"PhysicalAreaErrorMinPts{}Con{}".format( minPts, conType)
 
