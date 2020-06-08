@@ -26,10 +26,14 @@ def integrand(x, alpha,y,yError):
 
 
 class powerLaw1:
-    thinning=10
-    chainSample =  20
+    thinning=5
+    chainSample =  40
     burn_in=20
     nChain=50
+
+
+
+
     def __init__(self):
         pass
 
@@ -133,6 +137,7 @@ class powerLaw1:
             normalFactor1 = (alpha1 - 1) * minV ** (alpha1 - 1)  # beta1/( maxV**beta1 -minV**beta1 )
 
 
+
         return len(dataArraym) * (  np.log(normalFactor1)  -0.5*np.log(2*np.pi)  )- np.sum(np.log(dataArrayError)) +self.logSumOfInt(dataArraym,dataArrayError,alpha1,minV,maxV )   #- alpha1 * np.sum(np.log(dataArraym))
 
 
@@ -147,7 +152,7 @@ class powerLaw1:
 
         mass  = dataArray
 
-        print "The minimum and maximum masses are (in solar mass), in the MWISPcloud folder", minV, maxV
+        #print "The minimum and maximum masses are (in solar mass), in the MWISPcloud folder", minV, maxV
 
         np.random.seed()
 
@@ -313,7 +318,7 @@ class powerLaw1:
         # instantiating process with arguments
         for name in range(self.nChain):
             # print(name)
-            print "Starting process ", name
+            #print "Starting process ", name
             # sampleN=1000, burn_in=100, minV=None, maxV=None, thin=15):
             proc = multiprocessing.Process(target=self.fitPowerLawWithMCMCcomponent1WithError, args=(  rawArea, rawAreaError,name, returnSampleDic, self.chainSample,self.burn_in,minArea,maxArea,self.thinning  ) )
             procs.append(proc)
