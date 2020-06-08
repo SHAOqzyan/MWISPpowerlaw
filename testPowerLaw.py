@@ -277,4 +277,6 @@ class testPL:
 if 1:
 
     doPL=testPL()
-    doPL.calPhysicalAlpha()
+    doPL.calPhysicalAlpha( conType=1 )
+    doPL.calPhysicalAlpha( conType=2 )
+    doPL.calPhysicalAlpha( conType=3 )
