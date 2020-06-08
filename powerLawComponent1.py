@@ -27,9 +27,9 @@ def integrand(x, alpha,y,yError):
 
 class powerLaw1:
     thinning=5
-    chainSample =  40
-    burn_in=20
-    nChain=50
+    chainSample =  50
+    burn_in=10
+    nChain=20
 
 
 
