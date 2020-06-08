@@ -194,7 +194,7 @@ class testPL:
 
         for eachTB in TBList:
             # realArea = doDBSCAN.getRealArea(eachTB)
-
+            print "Total number of clouds, ", len(eachTB)
             phyiscalArea, physicalAreaError = self.getPhyscialAreaAndError(eachTB)
 
             # binN, binEdges = np.histogram(realArea, bins=physicalEdges)
@@ -264,8 +264,8 @@ class testPL:
             print "PhysicalAreaMinPts{}Con{}".format( minPts, conType)
             print alphaArea,alphaAreaError
 
-            saveTagAlpha=self.saveAlphaPath+"PhysicalAreaMinPts{}Con{}".format( minPts, conType)
-            saveTagAlphaError=self.saveAlphaPath+"PhysicalAreaErrorMinPts{}Con{}".format( minPts, conType)
+            saveTagAlpha=self.saveAlphaPath+"PhysicalAreaMinPts{}Con{}".format( eachminPts, conType)
+            saveTagAlphaError=self.saveAlphaPath+"PhysicalAreaErrorMinPts{}Con{}".format( eachminPts, conType)
 
             np.save(saveTagAlpha, alphaArea  )
             np.save(saveTagAlphaError, alphaAreaError  )
