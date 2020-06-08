@@ -391,7 +391,7 @@ class testPL:
             alphaMass , alphaMassError,completeList = self.getMassAlphaList(tbList, self.cutoffList)
 
             print "massAlphaMinPts{}Con{}".format( eachminPts, conType)
-            print alphaArea,alphaAreaError
+            print alphaMass,alphaMassError
 
             saveTagAlpha = self.saveAlphaPath+"massAlphaMinPts{}Con{}".format( eachminPts, conType)
             saveTagAlphaError = self.saveAlphaPath+"massAlphaErrorMinPts{}Con{}".format( eachminPts, conType)
