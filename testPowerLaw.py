@@ -21,6 +21,16 @@ class testPL:
     conTypeG2650={1:con1G2650,2:con2G2650,3:con3G2650}
     cutoffList= [2, 2.5,3.0,3.5,4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.0]
     rmsCO12=0.5
+
+    rms = 0.5
+
+
+    pixelArea = 0.25  # arcmins
+
+    parsecToMeter = 3.0857e16  # m
+
+
+
     def __init__(self):
         pass
 
@@ -210,7 +220,104 @@ class testPL:
 
         return alphaList, alphaErrorList
 
+    ###########################################################
+    def getMassAlphaList(self, tbList, sigmaList):
+        # calculate alpha and  error for each alpha for each tb
 
+        alphaList = []
+        errorList = []
+        completeList = []
+        for i in range(len(sigmaList)):
+            eachTB = tbList[i]
+
+            eachSigma = sigmaList[i]
+
+            massArray, massArrayError  = self.getMassAndError(eachTB)
+            # minFlux=324*self.rms*0.2*eachSigma*3    # K km/s, the last 2 is the two channels
+            # minFlux=144*self.rms*0.2*eachSigma*3    # K km/s, the last 2 is the two channels
+            minFlux = 16 * self.rms * 0.2 * eachSigma  # K km/s, the last 2 is the two channels
+
+            minMass,minMassError = self.calmassByXfactor(minFlux, 1500)
+
+            print  "The complete mass and total number clouds are: ", minMass, len(massArray)
+
+            print np.mean( massArrayError/massArray ),"averaga mass error"
+
+
+            #meanA, stdA = self.getAlphaWithMCMC(massArray, minArea=minMass, maxArea=None, physicalArea=True)
+            #meanA, stdA = self.getAlphaWithMCMC(massArray, minArea=minMass, maxArea=None, physicalArea=True)
+            meanA, stdA = doPowerLaw.getAlphaWithMCMCWithErrorMultiChains(massArray, massArrayError,    minArea=minMass,  maxArea=np.max(massArray))
+
+            alphaList.append(meanA)
+            errorList.append(stdA)
+            completeList.append(minMass)
+
+        return alphaList, errorList, completeList
+
+    def getMassAndError(self, TB):
+
+        massList = []
+        errorList = []
+        # print TB.colnames
+        for eachR in TB:
+            v = eachR["v_cen"]
+            # dis= ( 0.033*v + 0.175)*1000 # pc
+            dis = (0.033 * v + 0.180) * 1000  # pc
+
+            if dis < 0 or dis > 1500:
+                continue
+
+            fluxSum = eachR["sum"] * 0.2
+            massSingle,errorSingle= self.calmassByXfactor(fluxSum, dis)  # eachR["pixN"]  #*10000
+            # print N,  trueArea
+
+            massList.append(massSingle)
+            errorList.append( errorSingle )
+
+        return np.asarray(massList), np.asarray(errorList)
+
+
+
+
+    def calmassByXfactor(self, coInt, distance, xFactor=2.0e20):
+
+        """
+        The unit of coInt must be K km/s,
+        distance pc
+        not calDis, calMass
+        """
+
+        NH2 = coInt * xFactor  # cm-2 #
+
+        # distance=2200 # pc
+
+        # parsecToMeter= 3.0857e16 #m
+        # length1=np.radians(degSize1)*self.distance*self.parsecToMeter*100. #cm
+        # length2=np.radians(degSize2)*self.distance*self.parsecToMeter*100.
+
+        # should use single pix for 12CO
+
+        length1 = np.radians(30. / 60. / 60.) * distance * self.parsecToMeter * 100.  # cm
+        # length2=np.radians(degSize2)*self.distance*self.parsecToMeter*100.
+
+        mu = 1.36
+
+        Mh2 = 3.35e-27  # kg
+        solarMass = 1.9891e30  # kg
+        # s=np.pi*length1*length1
+        s = length1 * length1
+
+        coreSolar = s * NH2 * Mh2 * mu / solarMass
+
+
+        #cal error
+        #161 is the distance error
+        massError =   161*np.radians(30. / 60. / 60.) * self.parsecToMeter * 100. * 2*length1 * NH2 * Mh2 * mu / solarMass
+
+
+
+
+        return coreSolar,massError
 
     def getPhyscialAreaAndError(self,TB):
         """
@@ -281,17 +388,18 @@ class testPL:
 
 
             #######
-            alphaMass , alphaMassError = self.getPhysicalAlphaList(tbList)
+            alphaMass , alphaMassError,completeList = self.getMassAlphaList(tbList, self.cutoffList)
 
-            print "massAlphaMinPts{}Con{}".format( minPts, conType)
+            print "massAlphaMinPts{}Con{}".format( eachminPts, conType)
             print alphaArea,alphaAreaError
 
             saveTagAlpha = self.saveAlphaPath+"massAlphaMinPts{}Con{}".format( eachminPts, conType)
-            saveTagAlphaError = self.saveAlphaPath+"massAlphaMinPts{}Con{}".format( eachminPts, conType)
+            saveTagAlphaError = self.saveAlphaPath+"massAlphaErrorMinPts{}Con{}".format( eachminPts, conType)
+            saveTagAlphaComplete = self.saveAlphaPath+"massAlphaCompleteMinPts{}Con{}".format( eachminPts, conType)
 
             np.save(saveTagAlpha, alphaMass  )
             np.save(saveTagAlphaError, alphaMassError  )
-
+            np.save(saveTagAlphaComplete, completeList  )
 
 
 
@@ -305,6 +413,20 @@ class testPL:
 if 1:
 
     doPL=testPL()
+    doPL.calMassAlpha( conType=1 )
+    #doPL.calMassAlpha( conType=2 )
+    #doPL.calMassAlpha( conType=3 )
+
+
+
+
+
+if 0:
+
+    doPL=testPL()
     doPL.calPhysicalAlpha( conType=1 )
     doPL.calPhysicalAlpha( conType=2 )
     doPL.calPhysicalAlpha( conType=3 )
+
+
+
