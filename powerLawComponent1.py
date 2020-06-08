@@ -336,7 +336,7 @@ class powerLaw1:
 
         combineSampleArray = np.concatenate(combineSampleArray)
 
-        print len( combineSampleArray)
+        print len( combineSampleArray),np.mean( combineSampleArray), np.std( combineSampleArray,ddof=1)
 
 
         return np.mean( combineSampleArray), np.std( combineSampleArray,ddof=1)
