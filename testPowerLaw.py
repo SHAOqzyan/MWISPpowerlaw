@@ -264,7 +264,7 @@ class testPL:
             # dis= ( 0.033*v + 0.175)*1000 # pc
             dis = (0.033 * v + 0.180) * 1000  # pc
 
-            if dis < 0 or dis > 1500:
+            if dis < 200 or dis > 1500:
                 continue
 
             fluxSum = eachR["sum"] * 0.2
@@ -336,7 +336,7 @@ class testPL:
         # dis= ( 0.033*v + 0.175)*1000 # pc
         #
 
-        selectionCriteria= np.logical_and(dis>0, dis<=1500   )
+        selectionCriteria= np.logical_and(dis>=200, dis<=1500   )
 
         goodClouds= processTB[selectionCriteria] ###
 
@@ -476,11 +476,27 @@ class testPL:
 
 
 
+    def getPhysicalAreaRange(self):
+
+
+        for eachCon in [1,2,3]:
+            for eachMinpts in self.conTypeG2650[eachCon]:
+                TBList=self.getTBByCutOffList(self.cutoffList,minPts=eachMinpts,conType=eachCon)
+
+
+                for eachTB in TBList:
+                    #####
+                    area,areaError=self.getPhyscialAreaAndError(eachTB)
+                    print np.min(area),np.max(areaError)
 
     def ZZZ(self):
         pass
 
 doPL=testPL()
+
+
+if 0:
+    doPL.getPhysicalAreaRange()
 
 
 if 1: #part ssh c01n02
