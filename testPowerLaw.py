@@ -445,7 +445,7 @@ class testPL:
 
         saveTagAlpha = self.saveAlphaPath+"massAlphaSCIMESMinPts{}Con{}".format( eachminPts, conType)
         saveTagAlphaError = self.saveAlphaPath+"massAlphaErrorSCIMESMinPts{}Con{}".format( eachminPts, conType)
-        saveTagAlphaComplete = self.saveAlphaPath+"massAlphaSCIMESCompleteMinPts{}Con{}".format( eachminPts, conType)
+        saveTagAlphaComplete = self.saveAlphaPath+"massAlphaCompleteSCIMESMinPts{}Con{}".format( eachminPts, conType)
 
         np.save(saveTagAlpha , alphaMass  )
         np.save(saveTagAlphaError , alphaMassError  )
