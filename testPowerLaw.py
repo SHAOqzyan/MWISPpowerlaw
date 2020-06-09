@@ -483,26 +483,23 @@ class testPL:
 doPL=testPL()
 
 
-if 1:
-    doPL.calMassAlphaSCIMES()
-    doPL.calPhysicalAlphaSCIMES()
-
-if 0:
-
+if 1: #part ssh c01n02
+    "Calculating mass alpha"
     doPL.calMassAlpha( conType=1 )
     doPL.calMassAlpha( conType=2 )
     doPL.calMassAlpha( conType=3 )
 
+    doPL.calMassAlphaSCIMES()
 
 
 
-
-if 0:
-
+if 0: # ssh c01n03
+    print     "Calculating physical area alpha"
     doPL=testPL()
     doPL.calPhysicalAlpha( conType=1 )
     doPL.calPhysicalAlpha( conType=2 )
     doPL.calPhysicalAlpha( conType=3 )
 
+    doPL.calPhysicalAlphaSCIMES()
 
 
