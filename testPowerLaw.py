@@ -499,7 +499,7 @@ if 0:
     doPL.getPhysicalAreaRange()
 
 
-if 1: #part ssh c01n02
+if 0: #part ssh c01n02
     "Calculating mass alpha"
     doPL.calMassAlpha( conType=1 )
     doPL.calMassAlpha( conType=2 )
@@ -509,7 +509,7 @@ if 1: #part ssh c01n02
 
 
 
-if 0: # ssh c01n03
+if 1: # ssh c01n03
     print     "Calculating physical area alpha"
     doPL=testPL()
     doPL.calPhysicalAlpha( conType=1 )
