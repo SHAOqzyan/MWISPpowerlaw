@@ -397,11 +397,82 @@ class testPL:
             saveTagAlphaError = self.saveAlphaPath+"massAlphaErrorMinPts{}Con{}".format( eachminPts, conType)
             saveTagAlphaComplete = self.saveAlphaPath+"massAlphaCompleteMinPts{}Con{}".format( eachminPts, conType)
 
-            np.save(saveTagAlpha, alphaMass  )
-            np.save(saveTagAlphaError, alphaMassError  )
-            np.save(saveTagAlphaComplete, completeList  )
+            np.save(saveTagAlpha , alphaMass  )
+            np.save(saveTagAlphaError , alphaMassError  )
+            np.save(saveTagAlphaComplete , completeList  )
 
 
+    def getSCIMESTBList(self):
+
+        # dendroSigmaList=[2,2.5 , 3, 3.5, 4,4.5,5, 5.5, 6,6.5,7]
+
+        dendroSigmaList = [ 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7 ]
+        path = self.saveTBPath #"/home/qzyan/WORK/myDownloads/MWISPcloud/scimesG2650/"
+
+        #
+        tbList=[]
+        for sigmas in dendroSigmaList:
+
+            tb16File = path + "ClusterAsgn_{}_16Ve20_CleanWithLW.fit".format(sigmas )
+            #print tb16File
+            #print os.path.isfile(tb16File)
+
+            #print len(Table.read( tb16File ) )
+            tbList.append( Table.read( tb16File ) )
+
+
+
+        return tbList, dendroSigmaList
+
+
+
+
+
+    def calMassAlphaSCIMES(self,conType=0):
+        """
+
+        :return:
+        """
+
+        #tbList = self.getTBByCutOffList(self.cutoffList,eachminPts,conType)
+        tbList, sigmaCutOFF = self.getSCIMESTBList( )
+
+
+        #######
+        alphaMass , alphaMassError,completeList = self.getMassAlphaList(tbList, self.cutoffList)
+
+
+
+        saveTagAlpha = self.saveAlphaPath+"massAlphaSCIMESMinPts{}Con{}".format( eachminPts, conType)
+        saveTagAlphaError = self.saveAlphaPath+"massAlphaErrorSCIMESMinPts{}Con{}".format( eachminPts, conType)
+        saveTagAlphaComplete = self.saveAlphaPath+"massAlphaSCIMESCompleteMinPts{}Con{}".format( eachminPts, conType)
+
+        np.save(saveTagAlpha , alphaMass  )
+        np.save(saveTagAlphaError , alphaMassError  )
+        np.save(saveTagAlphaComplete , completeList  )
+
+    def calPhysicalAlphaSCIMES(self,conType=0):
+        """
+
+        :return:
+        """
+        eachminPts=0
+        #for eachminPts in self.conTypeG2650[conType]:
+
+        #tbList = self.getTBByCutOffList(self.cutoffList,eachminPts,conType)
+        tbList, sigmaCutOFF = self.getSCIMESTBList( )
+
+        #######
+        alphaArea, alphaAreaError = self.getPhysicalAlphaList(tbList)
+
+        #print "PhysicalAreaMinPts{}Con{}".format( eachminPts, conType)
+        #print alphaArea,alphaAreaError
+
+        saveTagAlpha=self.saveAlphaPath+"PhysicalAreaSCIMESMinPts{}Con{}".format( eachminPts, conType)
+        saveTagAlphaError=self.saveAlphaPath+"PhysicalAreaErrorSCIMESMinPts{}Con{}".format( eachminPts, conType)
+
+        np.save(saveTagAlpha, alphaArea  )
+        np.save(saveTagAlphaError, alphaAreaError  )
 
 
 
@@ -409,10 +480,15 @@ class testPL:
     def ZZZ(self):
         pass
 
+doPL=testPL()
+
 
 if 1:
+    doPL.calMassAlphaSCIMES()
+    doPL.calPhysicalAlphaSCIMES()
 
-    doPL=testPL()
+if 0:
+
     doPL.calMassAlpha( conType=1 )
     doPL.calMassAlpha( conType=2 )
     doPL.calMassAlpha( conType=3 )
