@@ -433,7 +433,7 @@ class testPL:
 
         :return:
         """
-
+        eachminPts=0
         #tbList = self.getTBByCutOffList(self.cutoffList,eachminPts,conType)
         tbList, sigmaCutOFF = self.getSCIMESTBList( )
 
